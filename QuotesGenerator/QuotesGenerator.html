@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>명언 생성기</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to right, #FFF0D9, #E6E6FA);
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .quote-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        #btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ADD8E6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #btn:hover {
+            background-color: #87CEEB;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="quote-container">
+            <p id="quote"></p>
+            <p id="author"></p>
+        </div>
+        <button id="btn">랜덤 명언</button> //
+    </div>
+</body>
+    <script>
+        document.getElementById('btn').addEventListener('click', generateQuote);
+        // 명언 생성 함수
+        function generateQuote() {
+            //fetch 메소드로 객체를 받아옵니다.
+            fetch('https://api.quotable.io/random')
+                .then(response => response.json())
+                .then(result => {
+                    document.getElementById('quote').textContent = `"${result.content}" - ${result.author}`;
+                    //백그라운드도 같이 변경되게 만든다.
+                    changeBackgroundColor();
+                })
+                //에러가 나오면 에러 메세지가 출력된다고 한다.
+                .catch((error) => console.log("error:", error));
+        }
+
+        function changeBackgroundColor() {
+            //컬러 배열
+            const colors = ['#FF7F50', '#20B2AA', '#9370DB', '#32CD32', '#7FFFD4', '#4682B4', '#8A2BE2'];
+            // Math.floor를 사용하여 소수점 버림 , 랜덤하게 숫자를 뽑고, colors[랜덤인덱스] 로 배경화면이 바뀐다
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            document.body.style.background = `${randomColor}`;
+        }
+    </script>
+
+</html>
